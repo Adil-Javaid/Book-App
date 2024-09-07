@@ -31,7 +31,7 @@ const setupGoogleAuth = (app) => {
         clientID: clientId,
         clientSecret: clientSecret,
         callbackURL:
-          "https://book-app-murex-ten.vercel.app/auth/google/callback",
+          "https://book-app-virid-six.vercel.app/auth/google/callback",
       },
       async (token, tokenSecret, profile, done) => {
         try {
@@ -74,10 +74,10 @@ const setupGoogleAuth = (app) => {
   );
 
   app.get(
-    "https://book-app-murex-ten.vercel.app/auth/google/callback",
+    "https://book-app-virid-six.vercel.app/auth/google/callback",
     passport.authenticate("google", { failureRedirect: "/" }),
     (req, res) => {
-      res.redirect("https://book-app-murex-ten.vercel.app");
+      res.redirect("https://book-app-virid-six.vercel.app");
     }
   );
 
@@ -98,7 +98,7 @@ const setupGoogleAuth = (app) => {
   // Route to handle logout
   app.get("/auth/logout", (req, res) => {
     req.logout(() => {
-      res.redirect("https://book-app-murex-ten.vercel.app");
+      res.redirect("https://book-app-virid-six.vercel.app");
     });
   });
 };

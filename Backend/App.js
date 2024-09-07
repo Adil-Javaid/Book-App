@@ -12,7 +12,7 @@ const port = process.env.PORT || 6005;
 
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://book-app-murex-ten.vercel.app"],
+    origin: ["http://localhost:5173", "https://book-app-virid-six.vercel.app"],
     credentials: true,
   })
 );
