@@ -63,9 +63,12 @@ const NavBar: React.FC<NavBarProps> = ({
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch("https://booksite-b7kfhvha.b4a.run//auth/user", {
-          credentials: "include",
-        });
+        const response = await fetch(
+          "https://booksite-b7kfhvha.b4a.run/auth/user",
+          {
+            credentials: "include",
+          }
+        );
         if (response.ok) {
           const data: User = await response.json();
           setUser(data);
