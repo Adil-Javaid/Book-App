@@ -77,7 +77,7 @@ const setupGoogleAuth = (app) => {
     "https://book-app-murex-ten.vercel.app/auth/google/callback",
     passport.authenticate("google", { failureRedirect: "/" }),
     (req, res) => {
-      res.redirect("http://localhost:5173");
+      res.redirect("https://book-app-murex-ten.vercel.app");
     }
   );
 
@@ -98,7 +98,7 @@ const setupGoogleAuth = (app) => {
   // Route to handle logout
   app.get("/auth/logout", (req, res) => {
     req.logout(() => {
-      res.redirect("http://localhost:5173");
+      res.redirect("https://book-app-murex-ten.vercel.app");
     });
   });
 };
