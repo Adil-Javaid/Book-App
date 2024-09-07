@@ -21,7 +21,7 @@ const TrendingBooks: React.FC = () => {
   useEffect(() => {
     const fetchTrendingBooks = async () => {
       try {
-        const response = await fetch("http://localhost:6005/api/books");
+        const response = await fetch("https://booksite-b7kfhvha.b4a.run//api/books");
         const data = await response.json();
         setBooks(data);
         setFilteredBooks(data);

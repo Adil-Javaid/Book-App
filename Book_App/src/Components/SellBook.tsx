@@ -39,7 +39,7 @@ const SellBook: React.FC = () => {
 
     try {
       // Submit the book data to the 'pending-books' API for admin approval
-      const response = await fetch("http://localhost:6005/api/pending-books", {
+      const response = await fetch("https://booksite-b7kfhvha.b4a.run//api/pending-books", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

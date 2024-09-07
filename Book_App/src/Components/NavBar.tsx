@@ -63,7 +63,7 @@ const NavBar: React.FC<NavBarProps> = ({
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch("http://localhost:6005/auth/user", {
+        const response = await fetch("https://booksite-b7kfhvha.b4a.run//auth/user", {
           credentials: "include",
         });
         if (response.ok) {
@@ -80,7 +80,7 @@ const NavBar: React.FC<NavBarProps> = ({
   }, []);
 
   const handleLogout = () => {
-    window.location.href = "http://localhost:6005/auth/logout";
+    window.location.href = "https://booksite-b7kfhvha.b4a.run//auth/logout";
   };
 
 
@@ -141,7 +141,7 @@ const NavBar: React.FC<NavBarProps> = ({
           <button
             className="google"
             onClick={() => {
-              window.location.href = "http://localhost:6005/auth/google";
+              window.location.href = "https://booksite-b7kfhvha.b4a.run//auth/google";
             }}
           >
             Google Login

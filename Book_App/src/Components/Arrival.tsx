@@ -17,7 +17,7 @@ const Arrival: React.FC<ArrivalProps> = ({ addToCart }) => {
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const response = await fetch("http://localhost:6005/api/new-books");
+        const response = await fetch("https://booksite-b7kfhvha.b4a.run//api/new-books");
         const data = await response.json();
         setBooks(data);
         setLoading(false);
