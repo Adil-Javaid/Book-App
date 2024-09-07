@@ -11,10 +11,15 @@ const setupGoogleAuth = (app) => {
     require("express-session")({
       secret: secretSession,
       resave: false,
-      saveUninitialized: false, // Set to false to avoid saving sessions that are not modified
-      cookie: { secure: false }, // Use `secure: true` if you are using HTTPS
+      saveUninitialized: true,
+      cookie: {
+        httpOnly: true, // Prevents client-side scripts from accessing the cookie
+        secure: true, // Ensures the cookie is sent only over HTTPS
+        sameSite: "none", // Allows cross-site requests with cookies
+      },
     })
   );
+
 
 
   app.use(passport.initialize());
@@ -48,18 +53,20 @@ const setupGoogleAuth = (app) => {
     )
   );
 
-  passport.serializeUser((user, done) => {
-    done(null, user.id);
-  });
+ passport.serializeUser((user, done) => {
+   done(null, user.id);
+ });
+
 
   passport.deserializeUser(async (id, done) => {
     try {
-      let user = await userDB.findById(id);
+      const user = await userDB.findById(id);
       done(null, user);
     } catch (err) {
       done(err, null);
     }
   });
+
 
   app.get(
     "/auth/google",
