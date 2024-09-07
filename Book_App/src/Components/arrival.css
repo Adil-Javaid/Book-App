@@ -114,13 +114,4 @@ p {
   p {
     font-size: 12px;
   }
-
-  .addToCartButton,
-  .buyButton {
-    padding: 4px 6px;
-    font-size: 7px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
 }
