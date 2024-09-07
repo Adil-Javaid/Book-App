@@ -81,7 +81,7 @@ const setupGoogleAuth = (app) => {
     }
   );
 
-  app.get("/auth/user", (req, res) => {
+  app.get("https://book-app-murex-ten.vercel.app/auth/user", (req, res) => {
     if (req.isAuthenticated()) {
       res.json({
         displayName: req.user.displayName,
