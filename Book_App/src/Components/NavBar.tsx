@@ -67,7 +67,8 @@ const NavBar: React.FC<NavBarProps> = ({
         const response = await fetch(
           "https://booksite-b7kfhvha.b4a.run/auth/user",
           {
-            credentials: "include", // This should send cookies along with the request
+            method: "GET",
+            credentials: "include", // Ensures cookies are sent with the request
           }
         );
         if (response.ok) {

@@ -83,6 +83,7 @@ const setupGoogleAuth = (app) => {
 
   // Backend (continuation from your previous setup)
   app.get("/auth/user", (req, res) => {
+    console.log("Authenticated user:", req.user);
     if (req.isAuthenticated()) {
       res.json({
         displayName: req.user.displayName,
