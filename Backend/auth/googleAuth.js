@@ -11,9 +11,11 @@ const setupGoogleAuth = (app) => {
     require("express-session")({
       secret: secretSession,
       resave: false,
-      saveUninitialized: true,
+      saveUninitialized: false, // Set to false to avoid saving sessions that are not modified
+      cookie: { secure: false }, // Use `secure: true` if you are using HTTPS
     })
   );
+
 
   app.use(passport.initialize());
   app.use(passport.session());

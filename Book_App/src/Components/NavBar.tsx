@@ -59,20 +59,24 @@ const NavBar: React.FC<NavBarProps> = ({
     }
     setIsMenuOpen(false);
   };
-  
+
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
         const response = await fetch(
           "https://booksite-b7kfhvha.b4a.run/auth/user",
           {
-            credentials: "include",
+            credentials: "include", // This should send cookies along with the request
           }
         );
         if (response.ok) {
           const data: User = await response.json();
           setUser(data);
           window.history.pushState({}, "", `/${data.username}`);
+        } else {
+          // Handle errors
+          console.error("Failed to fetch user data:", response.status);
         }
       } catch (error) {
         console.error("Failed to fetch user data", error);
@@ -82,8 +86,9 @@ const NavBar: React.FC<NavBarProps> = ({
     fetchUser();
   }, []);
 
+
   const handleLogout = () => {
-    window.location.href = "https://booksite-b7kfhvha.b4a.run//auth/logout";
+    window.location.href = "https://booksite-b7kfhvha.b4a.run/auth/logout";
   };
 
 
