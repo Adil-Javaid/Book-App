@@ -11,11 +11,12 @@ const setupGoogleAuth = (app) => {
     require("express-session")({
       secret: secretSession,
       resave: false,
-      saveUninitialized: true,
+      saveUninitialized: false,
       cookie: {
-        httpOnly: true, // Prevents client-side scripts from accessing the cookie
-        secure: true, // Ensures the cookie is sent only over HTTPS
-        sameSite: "none", // Allows cross-site requests with cookies
+        httpOnly: true, // Prevent JavaScript access
+        secure: true, // Cookies only sent over HTTPS
+        sameSite: "none", // Allows cross-site cookies
+        maxAge: 24 * 60 * 60 * 1000, // Session lasts for 24 hours
       },
     })
   );
@@ -82,8 +83,9 @@ const setupGoogleAuth = (app) => {
   );
 
   app.get("/auth/user", (req, res) => {
-    console.log("Authenticated user:", req.user);
+    console.log("Is authenticated:", req.isAuthenticated());
     if (req.isAuthenticated()) {
+      console.log("Authenticated user:", req.user);
       res.json({
         displayName: req.user.displayName,
         email: req.user.email,
