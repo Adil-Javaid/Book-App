@@ -1,0 +1,122 @@
+/* Container styling */
+.sellBookContainer {
+  width: 100%;
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Heading styling */
+.sellBookContainer h2 {
+  text-align: center;
+  color: #333;
+  font-size: 1.8rem;
+}
+
+/* Form styling */
+.sellBookForm {
+  display: flex;
+  flex-direction: column;
+}
+
+.sellBookForm label {
+  margin-top: 10px;
+  font-size: 1rem;
+  color: #555;
+}
+
+.sellBookForm input,
+.sellBookForm select {
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+.sellBookForm input:focus,
+.sellBookForm select:focus {
+  outline: none;
+  border-color: #007BFF;
+}
+
+/* Button styling */
+.submitButton {
+  margin-top: 20px;
+  padding: 12px;
+  background-color: #007BFF;
+  color: white;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submitButton:hover {
+  background-color: #0056b3;
+}
+
+/* Success and error message styling */
+.message {
+  margin-top: 15px;
+  font-size: 1rem;
+  color: #28a745;
+  text-align: center;
+}
+
+.message.error {
+  color: #dc3545;
+}
+
+/* Media queries for responsive design */
+@media (max-width: 768px) {
+  .sellBookContainer {
+    padding: 15px;
+    max-width: 90%;
+  }
+
+  .sellBookForm input,
+  .sellBookForm select {
+    font-size: 0.9rem;
+    padding: 8px;
+  }
+
+  .submitButton {
+    font-size: 1rem;
+    padding: 10px;
+  }
+
+  .sellBookContainer h2 {
+    font-size: 1.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .sellBookContainer {
+    padding: 10px;
+    max-width: 100%;
+  }
+
+  .sellBookForm input,
+  .sellBookForm select {
+    font-size: 0.85rem;
+    padding: 7px;
+  }
+
+  .submitButton {
+    font-size: 0.9rem;
+    padding: 8px;
+  }
+
+  .sellBookContainer h2 {
+    font-size: 1.4rem;
+  }
+
+  .message {
+    font-size: 0.9rem;
+  }
+}
