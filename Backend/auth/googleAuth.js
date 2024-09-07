@@ -69,12 +69,12 @@ const setupGoogleAuth = (app) => {
 
 
   app.get(
-    "/auth/google",
+    "https://book-app-murex-ten.vercel.app/auth/google",
     passport.authenticate("google", { scope: ["profile", "email"] })
   );
 
   app.get(
-    "/auth/google/callback",
+    "https://book-app-murex-ten.vercel.app/auth/google/callback",
     passport.authenticate("google", { failureRedirect: "/" }),
     (req, res) => {
       res.redirect("https://book-app-murex-ten.vercel.app");
@@ -82,6 +82,7 @@ const setupGoogleAuth = (app) => {
   );
 
   app.get("/auth/user", (req, res) => {
+    console.log("Authenticated user:", req.user);
     if (req.isAuthenticated()) {
       res.json({
         displayName: req.user.displayName,
