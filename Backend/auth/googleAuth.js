@@ -69,7 +69,7 @@ const setupGoogleAuth = (app) => {
 
 
   app.get(
-    "https://book-app-murex-ten.vercel.app/auth/google",
+    "/auth/google",
     passport.authenticate("google", { scope: ["profile", "email"] })
   );
 
