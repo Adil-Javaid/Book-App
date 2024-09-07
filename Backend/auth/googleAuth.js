@@ -31,7 +31,7 @@ const setupGoogleAuth = (app) => {
         clientID: clientId,
         clientSecret: clientSecret,
         callbackURL:
-          "https://book-app-murex-ten.vercel.app/auth/google/callback",
+          "/auth/google/callback",
       },
       async (token, tokenSecret, profile, done) => {
         try {
@@ -74,14 +74,14 @@ const setupGoogleAuth = (app) => {
   );
 
   app.get(
-    "https://book-app-murex-ten.vercel.app/auth/google/callback",
+    "/auth/google/callback",
     passport.authenticate("google", { failureRedirect: "/" }),
     (req, res) => {
       res.redirect("https://book-app-murex-ten.vercel.app");
     }
   );
 
-  app.get("https://book-app-murex-ten.vercel.app/auth/user", (req, res) => {
+  app.get("/auth/user", (req, res) => {
     if (req.isAuthenticated()) {
       res.json({
         displayName: req.user.displayName,
