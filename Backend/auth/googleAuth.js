@@ -31,7 +31,7 @@ const setupGoogleAuth = (app) => {
         clientID: clientId,
         clientSecret: clientSecret,
         callbackURL:
-          "/auth/google/callback",
+          "https://book-app-murex-ten.vercel.app/auth/google/callback",
       },
       async (token, tokenSecret, profile, done) => {
         try {
