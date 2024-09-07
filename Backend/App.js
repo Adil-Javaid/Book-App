@@ -8,7 +8,7 @@ const BookRouter = require("./Routes/BookRouter")
 const NewBookRouter = require('./Routes/NewBookRouter')
 const SellBookRouter = require('./Routes/SellBookRouter')
 const app = express();
-const PORT = process.env.PORT || 6005;
+const port = process.env.PORT || 6005;
 
 app.use(
   cors({
@@ -29,6 +29,6 @@ app.use("/api/books", BookRouter);
 app.use('/api/new-books', NewBookRouter)
 app.use("/api/pending-books", SellBookRouter);
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+app.listen(process.env.PORT, () => {
+  console.log(`Server is running on port ${port}`);
 });
