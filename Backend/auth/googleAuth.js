@@ -89,7 +89,7 @@ const setupGoogleAuth = (app) => {
 
   app.get("/auth/user", async (req, res) => {
     console.log("Is authenticated:", req.isAuthenticated());
-    if (!req.isAuthenticated()) {
+    if (req.isAuthenticated()) {
       try {
         // Find the user by ID
         const user = await userDB.findById(req.user.id);
