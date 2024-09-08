@@ -57,18 +57,21 @@ app.use(
     )
   );
 
-  passport.serializeUser((user, done) => {
-    done(null, user.id);
-  });
+passport.serializeUser((user, done) => {
+  console.log("Serializing user:", user);
+  done(null, user.id);
+});
 
-  passport.deserializeUser(async (id, done) => {
-    try {
-      const user = await userDB.findById(id);
-      done(null, user);
-    } catch (err) {
-      done(err, null);
-    }
-  });
+passport.deserializeUser(async (id, done) => {
+  console.log("Deserializing user with ID:", id);
+  try {
+    const user = await userDB.findById(id);
+    console.log("Deserialized user:", user);
+    done(null, user);
+  } catch (err) {
+    done(err, null);
+  }
+});
 
   app.get(
     "/auth/google",
