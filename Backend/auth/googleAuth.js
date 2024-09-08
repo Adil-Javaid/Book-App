@@ -79,6 +79,7 @@ const setupGoogleAuth = (app) => {
 
   app.get("/auth/user", (req, res) => {
     console.log("Is authenticated:", req.isAuthenticated());
+    console.log("Req:", req);
     if (req.isAuthenticated()) {
       console.log("Authenticated user:", req.user);
       res.json({
