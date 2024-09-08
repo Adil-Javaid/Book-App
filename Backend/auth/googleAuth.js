@@ -21,8 +21,6 @@ const setupGoogleAuth = (app) => {
     })
   );
 
-
-
   app.use(passport.initialize());
   app.use(passport.session());
 
@@ -34,9 +32,8 @@ const setupGoogleAuth = (app) => {
         callbackURL:
           "https://book-app-virid-six.vercel.app/auth/google/callback",
       },
-      async (token, tokenSecret, profile, done) => {
+      async (accessToken, refreshToken, profile, done) => {
         try {
-          console.log("Google profile:", profile); // Add this line for debugging
           let user = await userDB.findOne({ googleId: profile.id });
           if (!user) {
             user = new userDB({
@@ -49,17 +46,15 @@ const setupGoogleAuth = (app) => {
           }
           return done(null, user);
         } catch (err) {
-          console.error("Error in authentication:", err); // Add this line for debugging
           return done(err, null);
         }
       }
     )
   );
 
- passport.serializeUser((user, done) => {
-   done(null, user.id);
- });
-
+  passport.serializeUser((user, done) => {
+    done(null, user.id);
+  });
 
   passport.deserializeUser(async (id, done) => {
     try {
@@ -70,20 +65,18 @@ const setupGoogleAuth = (app) => {
     }
   });
 
+  app.get(
+    "/auth/google",
+    passport.authenticate("google", { scope: ["profile", "email"] })
+  );
 
-app.get(
-  "/auth/google",
-  passport.authenticate("google", { scope: ["profile", "email"] })
-);
-
-app.get(
-  "/auth/google/callback",
-  passport.authenticate("google", { failureRedirect: "/" }),
-  (req, res) => {
-    res.redirect("https://book-app-virid-six.vercel.app");
-  }
-);
-
+  app.get(
+    "/auth/google/callback",
+    passport.authenticate("google", { failureRedirect: "/" }),
+    (req, res) => {
+      res.redirect("https://book-app-virid-six.vercel.app");
+    }
+  );
 
   app.get("/auth/user", (req, res) => {
     console.log("Is authenticated:", req.isAuthenticated());
