@@ -76,7 +76,7 @@ const setupGoogleAuth = (app) => {
     "/auth/google/callback",
     passport.authenticate("google", { failureRedirect: "/" }),
     (req, res) => {
-      console.log("Authenticated user:");
+      console.log("Authenticated user: ", req.user);
       res.redirect("https://book-app-virid-six.vercel.app");
     }
   );
