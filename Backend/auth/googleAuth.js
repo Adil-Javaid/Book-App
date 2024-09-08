@@ -79,13 +79,18 @@ const setupGoogleAuth = (app) => {
 
   app.get("/auth/user", (req, res) => {
     console.log("Is authenticated:", req.isAuthenticated());
-    console.log("Req:", req);
+    console.log("Is authenticated:", req);
+    if (req.isAuthenticated() && req.user) {
+      console.log("Authenticated user:", req.user);
       res.json({
         displayName: req.user.displayName,
         email: req.user.email,
         image: req.user.image,
         username: req.user.displayName.toLowerCase().replace(/\s+/g, ""),
       });
+    } else {
+      res.status(401).json({ error: "User is not authenticated" });
+    }
   });
 
   // Route to handle logout
