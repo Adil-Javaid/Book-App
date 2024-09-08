@@ -87,10 +87,9 @@ passport.deserializeUser(async (id, done) => {
       res.redirect("https://book-app-virid-six.vercel.app");
     }
   );
-  
+
 app.get("/auth/user", async (req, res) => {
   console.log("Is authenticated:", req.isAuthenticated());
-  if (req.isAuthenticated()) {
     try {
       // Find the user by ID
       const user = await userDB.findById(req.user.id);
@@ -107,9 +106,6 @@ app.get("/auth/user", async (req, res) => {
     } catch (error) {
       res.status(500).json({ error: "Error fetching user data" });
     }
-  } else {
-    res.status(401).json({ error: "User is not authenticated" });
-  }
 });
 
   app.get("/auth/logout", (req, res) => {
