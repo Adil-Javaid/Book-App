@@ -93,16 +93,12 @@ app.get("/auth/user", async (req, res) => {
     try {
       // Find the user by ID
       const user = await userDB.findById(req.user.id);
-      if (user) {
         res.json({
           displayName: user.displayName,
           email: user.email,
           image: user.image,
           username: user.displayName.toLowerCase().replace(/\s+/g, ""),
         });
-      } else {
-        res.status(404).json({ error: "User not found" });
-      }
     } catch (error) {
       res.status(500).json({ error: "Error fetching user data" });
     }
