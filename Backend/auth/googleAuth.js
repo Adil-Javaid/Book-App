@@ -29,8 +29,7 @@ const setupGoogleAuth = (app) => {
       {
         clientID: clientId,
         clientSecret: clientSecret,
-        callbackURL:
-          "https://book-app-virid-six.vercel.app/auth/google/callback",
+        callbackURL: "https://booksite-b7kfhvha.b4a.run/auth/google/callback",
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
