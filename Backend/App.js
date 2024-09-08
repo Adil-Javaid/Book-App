@@ -12,7 +12,7 @@ const port = process.env.PORT || 6005;
 
 app.use(
   cors({
-    origin: ["https://book-app-pink.vercel.app/"], // The URL of your frontend
+    origin: ["https://book-app-pink.vercel.app"], // The URL of your frontend
     methods: "GET, POST, PUT, DELETE",
     credentials: true, // Allow credentials (cookies)
   })
