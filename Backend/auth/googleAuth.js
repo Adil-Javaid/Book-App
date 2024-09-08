@@ -9,23 +9,22 @@ const setupGoogleAuth = (app) => {
   const clientSecret = process.env.CLIENTSECRET;
   const secretSession = process.env.SECRET;
 
-const MongoStore = require("connect-mongo");
+  const MongoStore = require("connect-mongo");
 
-app.use(
-  session({
-    secret: secretSession,
-    resave: false,
-    saveUninitialized: false,
-    store: MongoStore.create({ mongoUrl: process.env.DATABASE }), // use your MongoDB URI here
-    cookie: {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "none",
-      maxAge: 24 * 60 * 60 * 1000, // 24 hours
-    },
-  })
-);
-
+  app.use(
+    session({
+      secret: secretSession,
+      resave: false,
+      saveUninitialized: false,
+      store: MongoStore.create({ mongoUrl: process.env.DATABASE }), // use your MongoDB URI here
+      cookie: {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "none",
+        maxAge: 24 * 60 * 60 * 1000, // 24 hours
+      },
+    })
+  );
 
   app.use(passport.initialize());
   app.use(passport.session());
@@ -57,21 +56,21 @@ app.use(
     )
   );
 
-passport.serializeUser((user, done) => {
-  console.log("Serializing user:", user);
-  done(null, user.id);
-});
+  passport.serializeUser((user, done) => {
+    console.log("Serializing user:", user);
+    done(null, user.id);
+  });
 
-passport.deserializeUser(async (id, done) => {
-  console.log("Deserializing user with ID:", id);
-  try {
-    const user = await userDB.findById(id);
-    console.log("Deserialized user:", user);
-    done(null, user);
-  } catch (err) {
-    done(err, null);
-  }
-});
+  passport.deserializeUser(async (id, done) => {
+    console.log("Deserializing user with ID:", id);
+    try {
+      const user = await userDB.findById(id);
+      console.log("Deserialized user:", user);
+      done(null, user);
+    } catch (err) {
+      done(err, null);
+    }
+  });
 
   app.get(
     "/auth/google",
@@ -87,36 +86,38 @@ passport.deserializeUser(async (id, done) => {
       res.redirect("https://book-app-pink.vercel.app");
     }
   );
-  
-app.get("/auth/user", async (req, res) => {
-  console.log("Is authenticated:", req.isAuthenticated());
-  if (req.isAuthenticated()) {
-    try {
-      // Find the user by ID
-      const user = await userDB.findById(req.user.id);
-      if (user) {
-        res.json({
-          displayName: user.displayName,
-          email: user.email,
-          image: user.image,
-          username: user.displayName.toLowerCase().replace(/\s+/g, ""),
-        });
-      } else {
-        res.status(404).json({ error: "User not found" });
+
+  app.get("/auth/user", async (req, res) => {
+    console.log("Is authenticated:", req.isAuthenticated());
+    if (req.isAuthenticated()) {
+      try {
+        // Find the user by ID
+        const user = await userDB.findById(req.user.id);
+        if (user) {
+          res.json({
+            displayName: user.displayName,
+            email: user.email,
+            image: user.image,
+            username: user.displayName.toLowerCase().replace(/\s+/g, ""),
+          });
+        } else {
+          res.status(404).json({ error: "User not found" });
+        }
+      } catch (error) {
+        res.status(500).json({ error: "Error fetching user data" });
       }
-    } catch (error) {
-      res.status(500).json({ error: "Error fetching user data" });
+    } else {
+      res.status(401).json({ error: "User is not authenticated" });
     }
-  } else {
-    res.status(401).json({ error: "User is not authenticated" });
-  }
-});
+  });
 
   app.get("/auth/logout", (req, res) => {
     req.logout(() => {
       res.redirect("https://book-app-pink.vercel.app");
     });
   });
+
+  app.set("trust proxy", 1); // Trust first proxy
 };
 
 
