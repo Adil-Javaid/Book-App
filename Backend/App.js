@@ -12,8 +12,9 @@ const port = process.env.PORT || 6005;
 
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://book-app-virid-six.vercel.app"],
-    credentials: true,
+    origin: ["https://book-app-virid-six.vercel.app"], // The URL of your frontend
+    method: "GET, POST, PUT, DELETE",
+    credentials: true, // Allow credentials (cookies)
   })
 );
 

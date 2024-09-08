@@ -7,24 +7,25 @@ const setupGoogleAuth = (app) => {
   const clientSecret = process.env.CLIENTSECRET;
   const secretSession = process.env.SECRET;
 
-  app.use(
-    require("express-session")({
-      secret: secretSession,
-      resave: false,
-      saveUninitialized: false,
-      cookie: {
-        httpOnly: true, // Prevent JavaScript access
-        secure: true, // Cookies only sent over HTTPS
-        sameSite: "none", // Allows cross-site cookies
-        maxAge: 24 * 60 * 60 * 1000, // Session lasts for 24 hours
-      },
-    })
-  );
-
-
-
+  
   app.use(passport.initialize());
   app.use(passport.session());
+
+app.use(
+  require("express-session")({
+    secret: secretSession,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "none", // Required for cross-origin cookies
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    },
+  })
+);
+
+
 
   passport.use(
     new GoogleStrategy(
@@ -54,10 +55,26 @@ const setupGoogleAuth = (app) => {
     )
   );
 
- passport.serializeUser((user, done) => {
-   done(null, user.id);
- });
 
+  app.get(
+    "/auth/google",
+    passport.authenticate("google", { scope: ["profile", "email"] })
+  );
+
+  app.get(
+    "/auth/google/callback",
+    passport.authenticate("google", {
+      failureRedirect: "/"
+    }),
+    (req, res) => {
+      console.log("Authenticated user:");
+      res.redirect("https://book-app-virid-six.vercel.app");
+    }
+  );
+
+  passport.serializeUser((user, done) => {
+    done(null, user.id);
+  });
 
   passport.deserializeUser(async (id, done) => {
     try {
@@ -69,20 +86,8 @@ const setupGoogleAuth = (app) => {
   });
 
 
-  app.get(
-    "/auth/google",
-    passport.authenticate("google", { scope: ["profile", "email"] })
-  );
-
-  app.get(
-    "https://book-app-virid-six.vercel.app/auth/google/callback",
-    passport.authenticate("google", { failureRedirect: "/" }),
-    (req, res) => {
-      res.redirect("https://book-app-virid-six.vercel.app");
-    }
-  );
-
   app.get("/auth/user", (req, res) => {
+    console.log("Session details:", req.session);
     console.log("Is authenticated:", req.isAuthenticated());
     if (req.isAuthenticated()) {
       console.log("Authenticated user:", req.user);
