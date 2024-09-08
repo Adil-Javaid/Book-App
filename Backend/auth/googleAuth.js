@@ -96,9 +96,7 @@ const setupGoogleAuth = (app) => {
     if (req.isAuthenticated() || forceAuthenticated) {
       try {
         // Find the user by ID (remove this if you just want to bypass it)
-        const user = await userDB.findById(
-          req.user?.id || "66d838c9727dfa9e0d5103c1"
-        );
+        const user = await userDB.findById(req.user?.id || "sampleUserId");
         if (user) {
           res.json({
             displayName: user.displayName,
