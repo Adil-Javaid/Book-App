@@ -4,25 +4,28 @@ const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const userDB = require("../model/GoogleUserSchema");
 
-
 const setupGoogleAuth = (app) => {
   const clientId = process.env.CLIENTID;
   const clientSecret = process.env.CLIENTSECRET;
   const secretSession = process.env.SECRET;
 
-  app.use(
-    session({
-      secret: secretSession,
-      resave: false,
-      saveUninitialized: false,
-      cookie: {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production", // Use HTTPS in production
-        sameSite: "none",
-        maxAge: 24 * 60 * 60 * 1000,
-      },
-    })
-  );
+const MongoStore = require("connect-mongo");
+
+app.use(
+  session({
+    secret: secretSession,
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({ mongoUrl: process.env.DATABASE }), // use your MongoDB URI here
+    cookie: {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "none",
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    },
+  })
+);
+
 
   app.use(passport.initialize());
   app.use(passport.session());
