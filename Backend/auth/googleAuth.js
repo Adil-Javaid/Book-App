@@ -1,31 +1,30 @@
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const userDB = require("../model/GoogleUserSchema");
+const session = require("express-session");
 
 const setupGoogleAuth = (app) => {
   const clientId = process.env.CLIENTID;
   const clientSecret = process.env.CLIENTSECRET;
   const secretSession = process.env.SECRET;
 
-  
+  // Setup express-session middleware before passport
+  app.use(
+    session({
+      secret: secretSession,
+      resave: false,
+      saveUninitialized: false,
+      cookie: {
+        httpOnly: false,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "none", // Required for cross-origin cookies
+        maxAge: 24 * 60 * 60 * 1000, // 24 hours
+      },
+    })
+  );
+
   app.use(passport.initialize());
   app.use(passport.session());
-
-app.use(
-  require("express-session")({
-    secret: secretSession,
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "none", // Required for cross-origin cookies
-      maxAge: 24 * 60 * 60 * 1000, // 24 hours
-    },
-  })
-);
-
-
 
   passport.use(
     new GoogleStrategy(
@@ -43,7 +42,7 @@ app.use(
               googleId: profile.id,
               displayName: profile.displayName,
               email: profile.emails[0].value,
-              image: profile.photo[0].value,
+              image: profile._json.picture, // Changed to profile._json.picture for profile image
             });
             await user.save();
           }
@@ -53,23 +52,6 @@ app.use(
         }
       }
     )
-  );
-
-
-  app.get(
-    "/auth/google",
-    passport.authenticate("google", { scope: ["profile", "email"] })
-  );
-
-  app.get(
-    "/auth/google/callback",
-    passport.authenticate("google", {
-      failureRedirect: "/"
-    }),
-    (req, res) => {
-      console.log("Authenticated user:");
-      res.redirect("https://book-app-virid-six.vercel.app");
-    }
   );
 
   passport.serializeUser((user, done) => {
@@ -85,6 +67,19 @@ app.use(
     }
   });
 
+  app.get(
+    "/auth/google",
+    passport.authenticate("google", { scope: ["profile", "email"] })
+  );
+
+  app.get(
+    "/auth/google/callback",
+    passport.authenticate("google", { failureRedirect: "/" }),
+    (req, res) => {
+      console.log("Authenticated user:");
+      res.redirect("https://book-app-virid-six.vercel.app");
+    }
+  );
 
   app.get("/auth/user", (req, res) => {
     console.log("Session details:", req.session);
