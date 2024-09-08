@@ -68,7 +68,7 @@ const NavBar: React.FC<NavBarProps> = ({
           "https://booksite-b7kfhvha.b4a.run/auth/user",
           {
             method: "GET",
-            credentials: "include", // Ensures cookies are sent with the request
+            credentials: "include",
           }
         );
         if (response.ok) {
@@ -150,7 +150,7 @@ const NavBar: React.FC<NavBarProps> = ({
           <button
             className="google"
             onClick={() => {
-              window.location.href = "https://booksite-b7kfhvha.b4a.run//auth/google";
+              window.location.href = "https://booksite-b7kfhvha.b4a.run/auth/google";
             }}
           >
             Google Login
