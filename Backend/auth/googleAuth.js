@@ -68,14 +68,16 @@ const setupGoogleAuth = (app) => {
     "/auth/google",
     passport.authenticate("google", { scope: ["profile", "email"] })
   );
+app.get(
+  "/auth/google/callback",
+  passport.authenticate("google", { failureRedirect: "/" }),
+  (req, res) => {
+    console.log("User authenticated:", req.isAuthenticated());
+    console.log("User:", req.user);
+    res.redirect("https://book-app-virid-six.vercel.app");
+  }
+);
 
-  app.get(
-    "/auth/google/callback",
-    passport.authenticate("google", { failureRedirect: "/" }),
-    (req, res) => {
-      res.redirect("https://book-app-virid-six.vercel.app");
-    }
-  );
 
   app.get("/auth/user", (req, res) => {
     console.log("Is authenticated:", req.isAuthenticated());
