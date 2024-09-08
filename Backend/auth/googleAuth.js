@@ -84,7 +84,7 @@ passport.deserializeUser(async (id, done) => {
     (req, res) => {
       console.log("User authenticated:", req.isAuthenticated());
       console.log("User:", req.user);
-      res.redirect("https://book-app-virid-six.vercel.app");
+      res.redirect("https://book-app-pink.vercel.app/");
     }
   );
   
@@ -114,7 +114,7 @@ app.get("/auth/user", async (req, res) => {
 
   app.get("/auth/logout", (req, res) => {
     req.logout(() => {
-      res.redirect("https://book-app-virid-six.vercel.app");
+      res.redirect("https://book-app-pink.vercel.app/");
     });
   });
 };
