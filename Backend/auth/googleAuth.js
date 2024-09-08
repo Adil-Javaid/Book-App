@@ -1,6 +1,9 @@
+const express = require("express");
+const session = require("express-session");
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const userDB = require("../model/GoogleUserSchema");
+
 
 const setupGoogleAuth = (app) => {
   const clientId = process.env.CLIENTID;
@@ -8,15 +11,15 @@ const setupGoogleAuth = (app) => {
   const secretSession = process.env.SECRET;
 
   app.use(
-    require("express-session")({
+    session({
       secret: secretSession,
       resave: false,
       saveUninitialized: false,
       cookie: {
-        httpOnly: true, // Prevent JavaScript access
-        secure: true, // Cookies only sent over HTTPS
-        sameSite: "none", // Allows cross-site cookies
-        maxAge: 24 * 60 * 60 * 1000, // Session lasts for 24 hours
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production", // Use HTTPS in production
+        sameSite: "none",
+        maxAge: 24 * 60 * 60 * 1000,
       },
     })
   );
@@ -68,22 +71,20 @@ const setupGoogleAuth = (app) => {
     "/auth/google",
     passport.authenticate("google", { scope: ["profile", "email"] })
   );
-app.get(
-  "/auth/google/callback",
-  passport.authenticate("google", { failureRedirect: "/" }),
-  (req, res) => {
-    console.log("User authenticated:", req.isAuthenticated());
-    console.log("User:", req.user);
-    res.redirect("https://book-app-virid-six.vercel.app");
-  }
-);
 
+  app.get(
+    "/auth/google/callback",
+    passport.authenticate("google", { failureRedirect: "/" }),
+    (req, res) => {
+      console.log("User authenticated:", req.isAuthenticated());
+      console.log("User:", req.user);
+      res.redirect("https://book-app-virid-six.vercel.app");
+    }
+  );
 
   app.get("/auth/user", (req, res) => {
     console.log("Is authenticated:", req.isAuthenticated());
-    console.log("Is authenticated:", req);
-    if (req.isAuthenticated() && req.user) {
-      console.log("Authenticated user:", req.user);
+    if (req.isAuthenticated()) {
       res.json({
         displayName: req.user.displayName,
         email: req.user.email,
@@ -95,12 +96,12 @@ app.get(
     }
   });
 
-  // Route to handle logout
   app.get("/auth/logout", (req, res) => {
     req.logout(() => {
       res.redirect("https://book-app-virid-six.vercel.app");
     });
   });
 };
+
 
 module.exports = setupGoogleAuth;
